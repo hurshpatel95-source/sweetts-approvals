@@ -1,0 +1,111 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet"><style>body{margin:0;font-family:Lato,sans-serif;font-size:15px;color:#444}#header{background:#fff;padding:14px 0;box-shadow:0 1px 4px rgba(0,0,0,.06)}#header .container{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:40px;padding:0 15px}#header img{max-height:118px}#header a{font-family:Montserrat,sans-serif;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#555;text-decoration:none;margin:0 14px}body.page #content{min-height:400px}#footer{background:#cbb6d8;padding:40px 0;margin-top:40px;color:#fff;text-align:center}
+/* Sweet T's Bakeshop — homepage v2 (hero slideshow + cards + info strip). Customizer → Additional CSS. Brand purple #9362a6 / #6b3f85. */
+.stb-hero{position:relative;min-height:460px;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;overflow:hidden;margin:0 0 36px}
+.stb-slides{position:absolute;inset:0}
+.stb-slides div{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;animation:stbfade 18s infinite}
+.stb-slides div:nth-child(1){animation-name:stbfadefirst}
+.stb-slides div:nth-child(2){animation-delay:6s}
+.stb-slides div:nth-child(3){animation-delay:12s}
+@keyframes stbfade{0%{opacity:0}6%{opacity:1}33%{opacity:1}40%{opacity:0}100%{opacity:0}}
+@keyframes stbfadefirst{0%{opacity:1}33%{opacity:1}40%{opacity:0}94%{opacity:0}100%{opacity:1}}
+.stb-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(60,30,80,.35),rgba(60,30,80,.6));z-index:1}
+.stb-hero-content{position:relative;z-index:2;max-width:780px;padding:48px 20px}
+.stb-hero h1{font-family:Montserrat,sans-serif;font-size:40px;line-height:1.15;letter-spacing:.02em;margin:0 0 12px;color:#fff;text-transform:none}
+.stb-hero p{font-size:18px;margin:0 0 22px;color:#fff}
+.stb-hero a{display:inline-block;margin:6px;padding:13px 26px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.stb-hero a.primary{background:#9362a6;color:#fff}.stb-hero a.secondary{background:#fff;color:#6b3f85}
+.stb-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:0 15px 26px}
+.stb-card{display:block;background:#fff;border-radius:14px;box-shadow:0 4px 18px rgba(80,40,100,.10);padding:0 0 22px;text-align:center;color:#444;text-decoration:none;overflow:hidden;transition:transform .15s}
+a.stb-card:hover{transform:translateY(-3px)}
+.stb-card img{display:block;width:200px;height:200px;object-fit:cover;border-radius:50%;margin:24px auto 0;box-shadow:0 2px 12px rgba(80,40,100,.14)}
+.stb-card img.icon{width:auto;max-width:78%;height:auto;border-radius:0;object-fit:contain;box-shadow:none;margin:52px auto 30px}
+.stb-card h3{font-family:Montserrat,sans-serif;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:#6b3f85;margin:16px 16px 6px}
+.stb-card p{margin:0 18px 12px;font-size:15px;line-height:1.5;color:#555}
+.stb-card .btn{display:inline-block;background:#9362a6;color:#fff;padding:9px 18px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.stb-info{background:#f6f1f9;border-radius:14px;padding:26px 30px;display:flex;gap:30px;justify-content:space-around;text-align:center;margin:0 15px 12px;flex-wrap:wrap}
+.stb-info>div{min-width:220px}
+.stb-info h4{font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#6b3f85;margin:0 0 8px}
+.stb-info p{margin:0;font-size:16px;line-height:1.5;color:#444}.stb-info a{color:#6b3f85;text-decoration:none}
+.stb-note{text-align:center;color:#666;font-size:14px;margin:0 15px 44px}.stb-note a{color:#6b3f85}
+@media(max-width:900px){.stb-cards{grid-template-columns:1fr}.stb-hero{min-height:380px}.stb-hero h1{font-size:28px}}
+/* v3: page background (old site's gingham) + kill theme section padding on the homepage */
+.home #content{background:#f7f5f9 url(https://sweettsbakery.com/new/wp-content/uploads/stb/background.jpg) repeat center top !important}
+.home .main-content > section.w-section, .home section.stb-row{padding-top:0 !important;padding-bottom:0 !important;margin-top:0 !important;margin-bottom:0 !important}
+.home .main-content.header-space{padding-bottom:0}
+.stb-hero{margin:0 0 40px}
+.stb-cards{margin-bottom:30px}
+.stb-info{background:rgba(255,255,255,.85)}
+.stb-note{margin-bottom:56px}
+/* v4: real gingham page background (theme paints white on .main-content), bigger header, bigger cards */
+.home .main-content.full-width, .home .main-content{background:transparent !important}
+.home #content{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)),url(https://sweettsbakery.com/new/wp-content/uploads/2017/12/sweetTs-Bakery-back-final.jpg) center top / 520px repeat !important}
+#header .header-wrapper{padding:14px 0 !important}
+#header img.dark-logo, #header img.light-logo, #header .logo img{max-height:118px !important;height:auto !important;width:auto !important}
+#header nav#top-nav ul.top-menu > li > a{font-size:15px !important;letter-spacing:.1em !important;padding:0 16px !important}
+.stb-hero{min-height:520px}
+.stb-hero h1{font-size:48px}
+.stb-hero p{font-size:20px}
+.stb-cards{gap:28px}
+.stb-card img{width:240px;height:240px}
+.stb-card h3{font-size:20px;margin-top:20px}
+.stb-card p{font-size:16.5px;margin:0 22px 14px}
+.stb-card .btn{font-size:13px;padding:11px 22px}
+.stb-info p{font-size:17px}
+@media(max-width:900px){.stb-hero h1{font-size:30px}.stb-card img{width:200px;height:200px}}
+/* v5: contact page */
+.page-id-60 .main-content{background:transparent !important}
+.page-id-60 #content{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)),url(https://sweettsbakery.com/new/wp-content/uploads/2017/12/sweetTs-Bakery-back-final.jpg) center top / 520px repeat !important}
+.stb-contact{display:grid;grid-template-columns:1fr 1.2fr;gap:30px;margin:40px 15px 60px;align-items:stretch}
+.stb-contact-info{background:rgba(255,255,255,.92);border-radius:14px;padding:34px 36px;box-shadow:0 4px 18px rgba(80,40,100,.10)}
+.stb-contact-info h1{font-family:Montserrat,sans-serif;font-size:28px;color:#6b3f85;margin:0 0 8px;text-transform:none}
+.stb-contact-info .lead{font-size:17px;color:#555;margin:0 0 22px}
+.stb-contact-info h4{font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#6b3f85;margin:18px 0 4px}
+.stb-contact-info p{margin:0;font-size:17px;line-height:1.55;color:#444}.stb-contact-info a{color:#6b3f85;text-decoration:none}
+.stb-contact-info .btn{display:inline-block;background:#9362a6;color:#fff !important;padding:12px 24px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:24px 8px 0 0}
+.stb-contact-info .btn.secondary{background:#fff;color:#6b3f85 !important;border:2px solid #9362a6;padding:10px 22px}
+.stb-contact-map{border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(80,40,100,.10);min-height:460px}
+.stb-contact-map iframe{width:100%;height:100%;min-height:460px;border:0;display:block}
+@media(max-width:900px){.stb-contact{grid-template-columns:1fr}}
+/* v6: don't let the sticky header shrink the logo to a speck */
+#header img.dark-logo, #header img.light-logo{min-height:72px !important;transition:max-height .2s}
+/* v7: site-wide page system rebuilt from the 2014 design (gingham, dotted panels, pill tabs, sidebars) */
+body.page #content, body.single #content{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)),url(https://sweettsbakery.com/new/wp-content/uploads/2017/12/sweetTs-Bakery-back-final.jpg) center top / 520px repeat !important}
+body.page .main-content, body.single .main-content{background:transparent !important}
+.stb-wrap{max-width:1170px;margin:34px auto 64px;padding:0 15px}
+.stb-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 0 10px;position:relative;z-index:2}
+.stb-tabs a{background:#dccbe8;color:#4a2b5c;padding:11px 18px;border-radius:12px 12px 0 0;font-family:Montserrat,sans-serif;font-size:13.5px;letter-spacing:.03em;text-decoration:none;border:2px dotted #b48cc9;border-bottom:0}
+.stb-tabs a.active{background:#fff;color:#9362a6;position:relative;top:2px}
+.stb-panel{background:#fff;border:2px dotted #b48cc9;border-radius:16px;padding:30px 32px;box-shadow:0 4px 18px rgba(80,40,100,.08)}
+.stb-cols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
+.stb-main h1{font-family:Montserrat,sans-serif;font-size:24px;color:#8a5aa8;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px dotted #d9c8e6;padding:0 0 12px;margin:0 0 20px;font-weight:600}
+.stb-main img.lead{width:100%;height:auto;border-radius:10px;margin:0 0 20px;display:block}
+.stb-main p{font-size:16.5px;line-height:1.65;color:#444;margin:0 0 14px}
+.stb-main h3{font-family:Montserrat,sans-serif;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#6b3f85;margin:24px 0 8px;font-weight:600}
+.stb-main ul.flavors{columns:2;column-gap:36px;list-style:none;padding:0;margin:0 0 18px}
+.stb-main ul.flavors li{padding:7px 0;border-bottom:1px dotted #e3d6ec;break-inside:avoid;font-size:16px;color:#444}
+.stb-flavor{display:grid;grid-template-columns:130px minmax(0,1fr);gap:18px;align-items:start;padding:16px 0;border-bottom:1px dotted #e3d6ec}
+.stb-flavor img{width:130px;height:130px;object-fit:cover;border-radius:10px}
+.stb-flavor h3{margin:2px 0 6px}
+.stb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.stb-grid a{display:block;text-align:center;text-decoration:none}
+.stb-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block}
+.stb-grid span{display:block;margin-top:10px;font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#8a5aa8;border-top:2px dotted #d9c8e6;border-bottom:2px dotted #d9c8e6;padding:9px 0}
+.stb-gallery{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.stb-gallery a{display:block}.stb-gallery img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block;background:#f3edf7}
+.stb-side{background:#ece2f2;border-radius:14px;padding:22px 24px 10px}
+.stb-side .item{padding:12px 0 16px;border-bottom:1px dotted #c9b3d8}.stb-side .item:last-child{border-bottom:0}
+.stb-side h4{font-family:"Dancing Script","Snell Roundhand","Brush Script MT",cursive;font-size:30px;line-height:1.1;color:#4a2b5c;margin:0 0 6px;font-weight:600;text-transform:none;letter-spacing:0}
+.stb-side p{font-size:15px;line-height:1.5;margin:0 0 8px;color:#4a3a55}
+.stb-side a.link{font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a5aa8;text-decoration:underline}
+.stb-more{display:inline-block;margin-top:10px;font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8a5aa8;text-decoration:underline}
+.stb-price table{width:100%;border-collapse:collapse;margin:8px 0 22px;font-size:16px}
+.stb-price td,.stb-price th{padding:9px 10px;border-bottom:1px dotted #e3d6ec;text-align:left}.stb-price th{font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#6b3f85}
+.stb-price td:last-child{text-align:right;font-weight:700;color:#6b3f85}
+.stb-press .item{padding:18px 0;border-bottom:1px dotted #e3d6ec}.stb-press .item img{max-width:320px;height:auto;border-radius:10px;margin:8px 0}
+.stb-press .src{font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8a5aa8}
+.stb-cta{display:inline-block;background:#9362a6;color:#fff !important;padding:12px 24px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none !important;margin:6px 8px 6px 0}
+.wpcf7 label{display:block;font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6b3f85;margin:14px 0 4px}
+.wpcf7 input[type=text],.wpcf7 input[type=email],.wpcf7 input[type=tel],.wpcf7 input[type=date],.wpcf7 input[type=number],.wpcf7 textarea,.wpcf7 select{width:100%;border:1px solid #d9c8e6;border-radius:10px;padding:10px 12px;font-size:15px}
+.wpcf7 .wpcf7-submit{background:#9362a6;color:#fff;border:0;border-radius:999px;padding:13px 28px;font-family:Montserrat,sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:16px;cursor:pointer}
+@media(max-width:900px){.stb-cols{grid-template-columns:1fr}.stb-grid{grid-template-columns:repeat(2,1fr)}.stb-gallery{grid-template-columns:repeat(2,1fr)}.stb-main ul.flavors{columns:1}.stb-panel{padding:22px 18px}.stb-tabs a{padding:9px 12px;font-size:12.5px}}
+</style><link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet"></head><body class="page"><div id="header"><div class="container"><img src="https://sweettsbakeshop.mobi/wp-content/uploads/2016/05/logo2.png"><nav><a>Home</a><a>Our Story</a><a>Baked Goods</a><a>Custom Cakes</a><a>Galleries</a><a>Order Online</a><a>News &amp; Press</a><a>Contact Us</a></nav></div></div><div id="content"><div class="main-content"><div class="stb-wrap"><nav class="stb-tabs"><a href="https://sweettsbakery.com/new/baked-goods/baked-treats/" class="active">Baked Treats</a><a href="https://sweettsbakery.com/new/baked-goods/cupcakes/">Cupcakes</a><a href="https://sweettsbakery.com/new/baked-goods/cake-flavors/">Cake Flavors</a><a href="https://sweettsbakery.com/new/baked-goods/cake-pops-cake-bombs/">Cake Pops / Cake Bombs</a><a href="https://sweettsbakery.com/new/baked-goods/pies-and-cheesecakes/">Pies &amp; Cheesecakes</a><a href="https://sweettsbakery.com/new/baked-goods/gluten-and-allergen-free/">Gluten &amp; Allergen Free</a><a href="https://sweettsbakery.com/new/baked-goods/mini-desserts/">Mini Desserts</a></nav><div class="stb-panel"><div class="stb-cols"><div class="stb-main"><h1>Muffins</h1><img class="lead" src="https://www.sweettsbakery.com/assets/uploads/images/BakedTreats_Muffins.jpg" alt="Muffins" style="max-width:420px"><p>Assortment baked daily. If you require 6 or more please call ahead to place that order</p><h3>&quot;New &amp; seasonal flavors added weekly&quot;</h3></div><aside class="stb-side"><div class="item"><h4>Catering</h4><p>We offer a wide variety of bite-sized treats &amp; party trays.</p><a class="link" href="https://sweettsbakery.com/new/order/">CATERING</a></div><div class="item"><h4>Full Barista on Site</h4><p>We proudly serve freshly brewed La Colombe coffee &amp; espresso drinks.</p></div><div class="item"><h4>Order Online</h4><p>Standard cakes, daily items and gift cards — order ahead for pickup.</p><a class="link" href="https://sweettsbakery.com/new/store/">ORDER ONLINE</a></div></aside></div></div></div></div></div><div id="footer">14 Kings Ct., Haddonfield, NJ 08033 · 856.428.0222 · info@sweettbakes.com</div></body></html>
