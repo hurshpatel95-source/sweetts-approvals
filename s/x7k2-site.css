@@ -110,3 +110,5 @@ body.page .main-content, body.single .main-content{background:transparent !impor
 @media(max-width:900px){.stb-cols{grid-template-columns:1fr}.stb-grid{grid-template-columns:repeat(2,1fr)}.stb-gallery{grid-template-columns:repeat(2,1fr)}.stb-main ul.flavors{columns:1}.stb-panel{padding:22px 18px}.stb-tabs a{padding:9px 12px;font-size:12.5px}}
 /* v7b: keep the 9-item menu on one line at desktop widths */
 #header nav#top-nav ul.top-menu > li > a{font-size:13.5px !important;letter-spacing:.06em !important;padding:0 11px !important}
+/* v7c: lead photos — cap height, center (portrait photos like Our Story) */
+.stb-main img.lead{width:auto;max-width:100%;max-height:520px;margin:0 auto 20px;display:block}
