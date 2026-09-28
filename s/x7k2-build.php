@@ -13,6 +13,9 @@ if($cf7){$cf7id=$cf7[0]->ID;} else {
   update_post_meta($cf7id,'_mail_2',['active'=>false]); update_post_meta($cf7id,'_messages',[]); update_post_meta($cf7id,'_additional_settings','');
   $log[]="cf7 form created #$cf7id";
 }
+// --- remove duplicate '-2' pages created by the earlier path bug (only when the original sibling exists)
+$dups=0; foreach(get_posts(['post_type'=>'page','post_status'=>'any','numberposts'=>-1]) as $pg){ if(preg_match('/^(.*)-(\d)$/',$pg->post_name,$m)){ foreach(get_posts(['post_type'=>'page','name'=>$m[1],'post_status'=>'any','numberposts'=>5]) as $orig){ if($orig->post_parent==$pg->post_parent){ wp_delete_post($pg->ID,true); $dups++; break; } } } }
+if($dups) $log[]="deleted $dups duplicate page(s)";
 // --- pages
 $created=0;$updated=0;$reparented=0;
 foreach($J as $p){
@@ -23,7 +26,9 @@ foreach($J as $p){
     preg_match('#\[vc_raw_html\](.*?)\[/vc_raw_html\]#s',$content,$m); $html=$dec($m[1]); list($a,$b)=explode('{{CF7}}',$html,2);
     $content='[vc_row el_class="stb-row"][vc_column][vc_raw_html]'.$enc($a).'[/vc_raw_html][vc_column_text][contact-form-7 id="'.$cf7id.'" title="Order Inquiry"][/vc_column_text][vc_raw_html]'.$enc($b).'[/vc_raw_html][/vc_column][/vc_row]';
   }
-  $ex=get_page_by_path($path);
+  // resolve by slug + parent id (works at any depth), then by full path, then reparent a same-slug top-level page
+  $ex=null; foreach(get_posts(['post_type'=>'page','name'=>$p['slug'],'post_status'=>'any','numberposts'=>5]) as $cand){ if((int)$cand->post_parent===(int)$parent_id){ $ex=$cand; break; } }
+  if(!$ex) $ex=get_page_by_path($path);
   if(!$ex && $p['parent']){ $top=get_page_by_path($p['slug']); if($top && $top->post_parent==0 && !in_array($p['slug'],['galleries','custom-cakes','baked-goods'])){ $ex=$top; $reparented++; } }
   $data=['post_type'=>'page','post_status'=>'publish','post_name'=>$p['slug'],'post_title'=>$p['title'],'post_content'=>$content,'post_parent'=>$parent_id,'comment_status'=>'closed'];
   if($ex){ $data['ID']=$ex->ID; $id=wp_update_post($data,true); $updated++; } else { $id=wp_insert_post($data,true); $created++; }
