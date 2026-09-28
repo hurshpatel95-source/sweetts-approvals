@@ -79,6 +79,6 @@ $h="<div class=\"stb-contact\"><div class=\"stb-contact-info\"><h1>Contact Sweet
 file_put_contents("/tmp/contact-new.txt","[vc_row el_class=\"stb-row\"][vc_column][vc_raw_html]".base64_encode(rawurlencode($h))."[/vc_raw_html][/vc_column][/vc_row]"); echo "  built\n";'
 $WP post update 60 --post_content="$(cat /tmp/contact-new.txt)"
 echo "== 3. preview gate: allow Hursh's Mac without a password (everyone else still needs it)"
-sed -i 's/^Require valid-user$/<RequireAny>\n  Require valid-user\n  Require ip 2601:80:cc03:fa40:c84a:30dc:af29:d5f2\n<\/RequireAny>/' .htaccess; grep -c "Require ip" .htaccess
+sed -i 's/^Require valid-user$/<RequireAny>\n  Require valid-user\n  Require ip 174.57.102.103\n  Require ip 2601:80:cc03:fa40:c84a:30dc:af29:d5f2\n<\/RequireAny>/' .htaccess; grep -c "Require ip" .htaccess
 $WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/contact-new.txt /tmp/stb-patch.css
 echo "PATCH-6-OK"
