@@ -18,8 +18,8 @@ cat > /tmp/stb-patch.css <<'CSSEOF'
 .stb-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:0 15px 26px}
 .stb-card{display:block;background:#fff;border-radius:14px;box-shadow:0 4px 18px rgba(80,40,100,.10);padding:0 0 22px;text-align:center;color:#444;text-decoration:none;overflow:hidden;transition:transform .15s}
 a.stb-card:hover{transform:translateY(-3px)}
-.stb-card img{width:100%;height:210px;object-fit:cover;display:block}
-.stb-card img.icon{height:170px;object-fit:contain;padding:22px 0 0;background:#faf7fc}
+.stb-card img{display:block;width:200px;height:200px;object-fit:cover;border-radius:50%;margin:24px auto 0;box-shadow:0 2px 12px rgba(80,40,100,.14)}
+.stb-card img.icon{width:auto;max-width:78%;height:auto;border-radius:0;object-fit:contain;box-shadow:none;margin:52px auto 30px}
 .stb-card h3{font-family:Montserrat,sans-serif;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:#6b3f85;margin:16px 16px 6px}
 .stb-card p{margin:0 18px 12px;font-size:15px;line-height:1.5;color:#555}
 .stb-card .btn{display:inline-block;background:#9362a6;color:#fff;padding:9px 18px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
@@ -41,14 +41,20 @@ CSSEOF
 WP="/opt/alt/php74/usr/bin/php /usr/local/bin/wp --path=$HOME/public_html/new"
 echo "== 1. gingham background from the old site"; cp -f ~/public_html/img/background.jpg wp-content/uploads/stb/background.jpg && ls -l wp-content/uploads/stb/background.jpg | awk '{print "  "$5" bytes"}'
 echo "== 2. css"; $WP eval 'wp_update_custom_css_post(file_get_contents("/tmp/stb-patch.css")); echo "  css bytes: ".strlen(wp_get_custom_css())."\n";'
-echo "== 3. homepage: drop spacer row, tag rows"; HOME_ID=$($WP option get page_on_front)
+echo "== 3. homepage: drop spacer row, tag rows, fix card images"; HOME_ID=$($WP option get page_on_front)
 $WP post get $HOME_ID --field=post_content > /tmp/home-cur.txt
 /opt/alt/php74/usr/bin/php -r '
 $c=file_get_contents("/tmp/home-cur.txt");
 $p=strpos($c,"[/vc_row]"); $first=substr($c,0,$p+9);
-if(strpos($first,"stb-hero")===false && strpos($first,"vc_raw_html")===false){ $c=ltrim(substr($c,$p+9)); echo "  spacer row removed\n"; } else echo "  no spacer row found\n";
+if(strpos($first,"vc_raw_html")===false){ $c=ltrim(substr($c,$p+9)); echo "  spacer row removed\n"; } else echo "  no spacer row found\n";
 $c=str_replace("[vc_row full_width=\"stretch_row_content_no_spaces\"]","[vc_row row_style=\"full-width\" el_class=\"stb-row\"]",$c);
 $c=str_replace("[vc_row]","[vc_row el_class=\"stb-row\"]",$c);
+$c=preg_replace_callback("#\[vc_raw_html\](.*?)\[/vc_raw_html\]#s",function($m){
+  $h=rawurldecode(base64_decode($m[1]));
+  $h=str_replace("2016/03/cupcake-cake.jpg","2016/03/gluten-free.jpg",$h);
+  $h=str_replace("stb/Specialty-Backdrop1.jpg\" alt=\"Sculpted specialty cakes\"","2016/03/CustomCakes_HandSculptedCakes.jpg\" alt=\"Sculpted specialty cakes\"",$h);
+  $h=str_replace("<img class=\"icon\" src=\"https://sweettsbakery.com/new/wp-content/uploads/2022/05/","<img src=\"https://sweettsbakery.com/new/wp-content/uploads/2022/05/",$h);
+  return "[vc_raw_html]".base64_encode(rawurlencode($h))."[/vc_raw_html]";},$c);
 file_put_contents("/tmp/home-new.txt",$c); echo "  rows: ".substr_count($c,"[vc_row")." | bytes: ".strlen($c)."\n";'
 $WP post update $HOME_ID --post_content="$(cat /tmp/home-new.txt)"
 $WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/home-new.txt /tmp/home-cur.txt /tmp/stb-patch.css
