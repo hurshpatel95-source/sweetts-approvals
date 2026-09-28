@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sweet T's Approvals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--purple:#9362a6;--purple-dark:#6b3f85;--purple-light:#f6f1f9;--ink:#2b2333;--muted:#6f6879;--line:#e6dfec;--bg:#fbf9fc;--ok:#2e8b57;--warn:#c9781a;--bad:#b23b3b;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Lato,system-ui,sans-serif;font-size:16px;line-height:1.5}
+header{background:var(--purple-dark);color:#fff;padding:22px 16px}
+header .wrap{max-width:1040px;margin:0 auto}
+h1{font-family:Montserrat,sans-serif;font-size:22px;margin:0 0 4px}
+header p{margin:0;opacity:.9;font-size:15px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+nav.tabs{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:5;overflow-x:auto;white-space:nowrap}
+nav.tabs .wrap{display:flex;gap:4px;padding:8px 16px}
+nav.tabs button{border:0;background:transparent;font:600 14px Montserrat,sans-serif;color:var(--muted);padding:10px 14px;border-radius:999px;cursor:pointer}
+nav.tabs button.active{background:var(--purple);color:#fff}
+nav.tabs button .n{font-weight:400;opacity:.8;margin-left:4px}
+section.panel{display:none;padding:22px 0 60px}
+section.panel.active{display:block}
+.intro{background:var(--purple-light);border-radius:14px;padding:16px 18px;margin-bottom:18px}
+.intro h2{font-family:Montserrat,sans-serif;font-size:17px;margin:0 0 6px}
+.intro p{margin:6px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;position:relative}
+.card.approved{border-color:var(--ok);box-shadow:inset 4px 0 0 var(--ok)}
+.card.edited{border-color:var(--purple);box-shadow:inset 4px 0 0 var(--purple)}
+.card.skipped{opacity:.55}
+.card h3{font-family:Montserrat,sans-serif;font-size:16px;margin:0 0 6px;color:var(--purple-dark)}
+.meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+.stars{color:#e0a800;letter-spacing:1px}
+.review-text{background:#faf8fc;border-left:3px solid var(--line);padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0 10px;font-size:15px}
+label.small{display:block;font:600 12px Montserrat,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 4px}
+textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px;color:var(--ink);background:#fff;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--purple);border-color:transparent}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font:600 13px Montserrat,sans-serif;cursor:pointer;color:var(--ink)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.skip{color:var(--muted)}
+.btn.primary{background:var(--purple);border-color:var(--purple);color:#fff}
+.btn:active{transform:translateY(1px)}
+.status{font:600 12px Montserrat,sans-serif;margin-left:auto;color:var(--muted)}
+.status.approved{color:var(--ok)}.status.edited{color:var(--purple)}.status.skipped{color:var(--bad)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 14px}
+.toolbar label{font-size:14px;display:flex;gap:6px;align-items:center}
+.pill{display:inline-block;background:var(--purple-light);color:var(--purple-dark);border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}
+.conflict{display:grid;grid-template-columns:1fr;gap:8px;margin:10px 0}
+.conflict div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.conflict b{display:block;font-family:Montserrat,sans-serif;font-size:13px;color:var(--purple-dark)}
+@media(min-width:700px){.conflict{grid-template-columns:repeat(3,1fr)}}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opts label{border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;background:#fff;font-size:14px}
+.opts input{margin-right:6px}
+footer.sendbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px;z-index:6}
+footer.sendbar .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+footer .summary{font-size:14px;color:var(--muted);flex:1;min-width:200px}
+.hidden{display:none!important}
+.note{font-size:13px;color:var(--muted)}
+.price{font-weight:700;color:var(--purple-dark)}
+a{color:var(--purple-dark)}
+.toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1 id="title">Sweet T's Bakeshop — things to approve</h1>
+  <p id="subtitle">Hi Chrissy — everything here is a draft. Nothing goes live until you approve it. Edit anything you want, then tap <b>Send to Hursh</b> at the bottom.</p>
+</div></header>
+
+<nav class="tabs"><div class="wrap">
+  <button data-tab="decisions" class="active">Decisions <span class="n" id="n-decisions"></span></button>
+  <button data-tab="reviews">Review replies <span class="n" id="n-reviews"></span></button>
+  <button data-tab="description">Description</button>
+  <button data-tab="posts">Posts <span class="n" id="n-posts"></span></button>
+  <button data-tab="products">Products <span class="n" id="n-products"></span></button>
+  <button data-tab="qna">Q&amp;A <span class="n" id="n-qna"></span></button>
+</div></nav>
+
+<main class="wrap">
+  <section class="panel active" id="panel-decisions">
+    <div class="intro"><h2>A few things only you can answer</h2><p>Pick an answer or type one. These fix mismatches between Google, Yelp and the website.</p></div>
+    <div id="decisions"></div>
+  </section>
+
+  <section class="panel" id="panel-reviews">
+    <div class="intro"><h2>Replies to your Google reviews</h2>
+      <p>These customers left a review you haven't answered yet. Each has a short draft reply written the way you already reply. Approve as-is, edit it, or skip it. Nothing is posted until you say so.</p>
+      <p class="note">Tip: <b>Approve all shown</b> approves every reply currently on screen; you can still edit or skip individual ones after.</p>
+    </div>
+    <div class="toolbar">
+      <label><input type="checkbox" id="hideRecent" checked> Hide the last 2 months (<span id="recentCount">0</span>)</label>
+      <label><input type="checkbox" id="hideDone"> Hide ones I've done</label>
+      <span class="pill" id="reviewsShown"></span>
+      <button class="btn ok" id="approveAllReviews">Approve all shown</button>
+    </div>
+    <div id="reviews"></div>
+  </section>
+
+  <section class="panel" id="panel-description">
+    <div class="intro"><h2>Your Google Business Profile description</h2><p>Google allows 750 characters. The current one is 88. This draft tells people what you actually do and where.</p></div>
+    <div id="description"></div>
+  </section>
+
+  <section class="panel" id="panel-posts">
+    <div class="intro"><h2>First four Google posts</h2><p>Your profile has never had a post. These go up one per week. You'd supply the photo for each.</p></div>
+    <div id="posts"></div>
+  </section>
+
+  <section class="panel" id="panel-products">
+    <div class="intro"><h2>Products on Google</h2><p>These come straight from your online store and show up on your Google listing with a Buy button. Prices and names as they are in the store today.</p></div>
+    <div id="products"></div>
+  </section>
+
+  <section class="panel" id="panel-qna">
+    <div class="intro"><h2>Questions &amp; answers</h2><p>Customers ask these on Google anyway; if you answer first, your answer is the one they see.</p></div>
+    <div id="qna"></div>
+  </section>
+</main>
+
+<footer class="sendbar"><div class="wrap">
+  <div class="summary" id="summary">Nothing decided yet.</div>
+  <button class="btn" id="copyBtn">Copy summary</button>
+  <button class="btn primary" id="sendBtn">Send to Hursh</button>
+</div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE_KEY='sweetts-approvals-v1';
+let DATA=null; let STATE={};
+try{STATE=JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){STATE={}}
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(STATE))}catch(e){}}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600)}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function stars(n){return '★'.repeat(n)+'☆'.repeat(5-n)}
+
+function setStatus(id,status,text){STATE[id]={status,text:text??STATE[id]?.text};save();render(true)}
+function itemCard(id,titleHtml,metaHtml,bodyHtml,draft,opts={}){
+  const st=STATE[id]||{};const text=st.text??draft;
+  return `<div class="card ${st.status||''}" data-id="${id}">
+    <h3>${titleHtml}</h3>${metaHtml?`<div class="meta">${metaHtml}</div>`:''}${bodyHtml||''}
+    <label class="small">${opts.label||'Draft'}</label>
+    <textarea data-id="${id}" rows="${opts.rows||2}">${esc(text)}</textarea>
+    <div class="actions">
+      <button class="btn ok" data-act="approve" data-id="${id}">Approve</button>
+      <button class="btn skip" data-act="skip" data-id="${id}">Skip</button>
+      ${st.status?`<button class="btn" data-act="reset" data-id="${id}">Undo</button>`:''}
+      <span class="status ${st.status||''}">${st.status==='approved'?'✓ Approved':st.status==='edited'?'✎ Edited & approved':st.status==='skipped'?'Skipped':''}</span>
+    </div></div>`;
+}
+
+function render(keepScroll){
+  const y=window.scrollY;
+  // decisions
+  document.getElementById('decisions').innerHTML=DATA.decisions.map(d=>{
+    const st=STATE[d.id]||{};
+    return `<div class="card ${st.status||''}"><h3>${d.title}</h3>${d.body}
+      ${d.options?`<div class="opts">${d.options.map(o=>`<label><input type="radio" name="${d.id}" value="${esc(o)}" ${st.text===o?'checked':''}>${esc(o)}</label>`).join('')}</div>`:''}
+      <label class="small">Your answer</label><input type="text" data-id="${d.id}" placeholder="Type here…" value="${esc(st.status?st.text:'')}">
+      <div class="actions"><span class="status ${st.status||''}">${st.status?'✓ Answered':''}</span></div></div>`}).join('');
+  // reviews
+  const hideRecent=document.getElementById('hideRecent').checked, hideDone=document.getElementById('hideDone').checked;
+  const cutoff=Date.now()-61*864e5;
+  let recent=0, shown=0;
+  document.getElementById('reviews').innerHTML=DATA.reviews.map(r=>{
+    const isRecent=new Date(r.dateApprox).getTime()>cutoff; if(isRecent)recent++;
+    const done=!!(STATE[r.id]||{}).status;
+    if((hideRecent&&isRecent)||(hideDone&&done))return '';
+    shown++;
+    return itemCard(r.id,`${esc(r.name)}`,`<span class="stars">${stars(r.stars)}</span> · ${esc(r.dateText)}`,r.text?`<div class="review-text">${esc(r.text)}</div>`:`<div class="review-text note">(rating only, no text)</div>`,r.draft,{label:'Your reply'});
+  }).join('')||'<p class="note">Nothing to show with these filters.</p>';
+  document.getElementById('recentCount').textContent=recent;
+  document.getElementById('reviewsShown').textContent=shown+' shown of '+DATA.reviews.length;
+  // description
+  document.getElementById('description').innerHTML=itemCard('description','Business description',`Current: <i>${esc(DATA.description.current)}</i>`,'',DATA.description.draft,{label:'Draft description ('+DATA.description.draft.length+' / 750 characters)',rows:7});
+  // posts
+  document.getElementById('posts').innerHTML=DATA.posts.map((p,i)=>itemCard(p.id,`Post ${i+1}: ${esc(p.title)}`,`Button: <b>${esc(p.cta)}</b> → ${esc(p.link)} · Photo: ${esc(p.photo)}`,'',p.body,{label:'Post text',rows:4})).join('');
+  // products
+  document.getElementById('products').innerHTML=DATA.products.map(p=>itemCard(p.id,`${esc(p.name)} <span class="price">${esc(p.price)}</span>`,`Links to: ${esc(p.link)}`,'',p.desc,{label:'Description on Google',rows:2})).join('');
+  // qna
+  document.getElementById('qna').innerHTML=DATA.qna.map(q=>itemCard(q.id,`Q: ${esc(q.q)}`,'','',q.a,{label:'Your answer',rows:3})).join('');
+  // counts
+  const cnt=(arr)=>arr.filter(x=>(STATE[x.id]||{}).status).length+'/'+arr.length;
+  document.getElementById('n-decisions').textContent=cnt(DATA.decisions);
+  document.getElementById('n-reviews').textContent=cnt(DATA.reviews);
+  document.getElementById('n-posts').textContent=cnt(DATA.posts);
+  document.getElementById('n-products').textContent=cnt(DATA.products);
+  document.getElementById('n-qna').textContent=cnt(DATA.qna);
+  summary();
+  if(keepScroll)window.scrollTo(0,y);
+}
+function summary(){
+  const all=[...DATA.reviews,...DATA.posts,...DATA.products,...DATA.qna,{id:'description'}];
+  const a=all.filter(x=>['approved','edited'].includes((STATE[x.id]||{}).status)).length;
+  const s=all.filter(x=>(STATE[x.id]||{}).status==='skipped').length;
+  const d=DATA.decisions.filter(x=>(STATE[x.id]||{}).status).length;
+  document.getElementById('summary').textContent=`${a} approved · ${s} skipped · ${d}/${DATA.decisions.length} questions answered`;
+}
+function buildReport(){
+  const lines=[`Sweet T's approvals — ${new Date().toLocaleString()}`,''];
+  lines.push('DECISIONS');DATA.decisions.forEach(d=>{const st=STATE[d.id];lines.push(`- ${d.short}: ${st?.text||'(not answered)'}`)});
+  const sec=(name,arr,fmt)=>{lines.push('',name);let any=false;arr.forEach(x=>{const st=STATE[x.id];if(!st?.status)return;any=true;const changed=st.status==='edited';lines.push(`- [${st.status.toUpperCase()}] ${fmt(x)}${changed?`\n    TEXT: ${st.text}`:''}`)});if(!any)lines.push('- (none yet)')};
+  sec('DESCRIPTION',[{id:'description',name:'description'}],x=>'description');
+  sec('REVIEW REPLIES',DATA.reviews,r=>`${r.id} · ${r.name} (${r.stars}★, ${r.dateText})`);
+  sec('POSTS',DATA.posts,p=>p.title);
+  sec('PRODUCTS',DATA.products,p=>p.name);
+  sec('Q&A',DATA.qna,q=>q.q);
+  return lines.join('\n');
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const id=b.dataset.id, ta=document.querySelector(`textarea[data-id="${id}"]`);
+  const orig=findDraft(id); const cur=ta?ta.value:undefined;
+  if(b.dataset.act==='approve')setStatus(id,(cur!==undefined&&cur.trim()!==orig.trim())?'edited':'approved',cur);
+  if(b.dataset.act==='skip')setStatus(id,'skipped',cur);
+  if(b.dataset.act==='reset'){delete STATE[id];save();render(true)}
+});
+document.addEventListener('input',e=>{
+  const el=e.target; if(!el.dataset.id)return;
+  if(el.tagName==='INPUT'&&el.type==='text'){STATE[el.dataset.id]={status:el.value.trim()?'answered':undefined,text:el.value};save();summary();}
+  if(el.tagName==='TEXTAREA'){const st=STATE[el.dataset.id];if(st&&st.status&&st.status!=='skipped'){st.text=el.value;st.status=el.value.trim()===findDraft(el.dataset.id).trim()?'approved':'edited';save()}}
+});
+document.addEventListener('change',e=>{
+  const el=e.target; if(el.type==='radio'){STATE[el.name]={status:'answered',text:el.value};save();render(true)}
+});
+function findDraft(id){
+  if(id==='description')return DATA.description.draft;
+  for(const arr of [DATA.reviews,DATA.posts,DATA.products,DATA.qna]){const x=arr.find(i=>i.id===id);if(x)return x.draft??x.body??x.desc??x.a??''}
+  return '';
+}
+document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('section.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+b.dataset.tab));
+  window.scrollTo(0,0);
+}));
+document.getElementById('hideRecent').addEventListener('change',()=>render());
+document.getElementById('hideDone').addEventListener('change',()=>render());
+document.getElementById('approveAllReviews').addEventListener('click',()=>{
+  document.querySelectorAll('#reviews .card').forEach(c=>{const id=c.dataset.id;if(!(STATE[id]||{}).status){const ta=c.querySelector('textarea');STATE[id]={status:ta.value.trim()!==findDraft(id).trim()?'edited':'approved',text:ta.value}}});
+  save();render(true);toast('Approved everything shown');
+});
+document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(buildReport());toast('Copied — paste it into a text or email')}catch(e){toast('Copy failed — use Send instead')}});
+document.getElementById('sendBtn').addEventListener('click',()=>{
+  const body=buildReport();
+  const url=`mailto:${DATA.meta.approver_email}?subject=${encodeURIComponent("Sweet T's approvals")}&body=${encodeURIComponent(body)}`;
+  if(url.length>7000){navigator.clipboard?.writeText(body);toast('Summary copied — it was too long for email, paste it into a text or email');}
+  location.href=url;
+});
+fetch('data.json?'+Date.now()).then(r=>r.json()).then(d=>{DATA=d;document.getElementById('subtitle').innerHTML=d.meta.greeting||document.getElementById('subtitle').innerHTML;render()}).catch(()=>{document.querySelector('main').innerHTML='<p class="note">Could not load the data file.</p>'});
+</script>
+</body>
+</html>
