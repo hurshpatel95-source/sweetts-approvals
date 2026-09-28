@@ -14,7 +14,7 @@ if($cf7){$cf7id=$cf7[0]->ID;} else {
   $log[]="cf7 form created #$cf7id";
 }
 // --- remove duplicate '-2' pages created by the earlier path bug (only when the original sibling exists)
-$dups=0; foreach(get_posts(['post_type'=>'page','post_status'=>'any','numberposts'=>-1]) as $pg){ if(preg_match('/^(.*)-(\d)$/',$pg->post_name,$m)){ foreach(get_posts(['post_type'=>'page','name'=>$m[1],'post_status'=>'any','numberposts'=>5]) as $orig){ if($orig->post_parent==$pg->post_parent){ wp_delete_post($pg->ID,true); $dups++; break; } } } }
+$dups=0; foreach(get_posts(['post_type'=>'page','post_status'=>'any','numberposts'=>-1]) as $pg){ if(preg_match('/^(.+)-(\\d+)$/',$pg->post_name,$m)){ foreach(get_posts(['post_type'=>'page','name'=>$m[1],'post_status'=>'any','numberposts'=>5]) as $orig){ if($orig->post_parent==$pg->post_parent){ wp_delete_post($pg->ID,true); $dups++; break; } } } }
 $log[]="duplicate cleanup: deleted $dups";
 // --- pages
 $created=0;$updated=0;$reparented=0;
