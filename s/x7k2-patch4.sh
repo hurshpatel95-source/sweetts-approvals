@@ -37,25 +37,24 @@ a.stb-card:hover{transform:translateY(-3px)}
 .stb-cards{margin-bottom:30px}
 .stb-info{background:rgba(255,255,255,.85)}
 .stb-note{margin-bottom:56px}
+/* v4: real gingham page background (theme paints white on .main-content), bigger header, bigger cards */
+.home .main-content.full-width, .home .main-content{background:transparent !important}
+.home #content{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)),url(https://sweettsbakery.com/new/wp-content/uploads/2017/12/sweetTs-Bakery-back-final.jpg) center top / 520px repeat !important}
+#header .header-wrapper{padding:14px 0 !important}
+#header img.dark-logo, #header img.light-logo, #header .logo img{max-height:118px !important;height:auto !important;width:auto !important}
+#header nav#top-nav ul.top-menu > li > a{font-size:15px !important;letter-spacing:.1em !important;padding:0 16px !important}
+.stb-hero{min-height:520px}
+.stb-hero h1{font-size:48px}
+.stb-hero p{font-size:20px}
+.stb-cards{gap:28px}
+.stb-card img{width:240px;height:240px}
+.stb-card h3{font-size:20px;margin-top:20px}
+.stb-card p{font-size:16.5px;margin:0 22px 14px}
+.stb-card .btn{font-size:13px;padding:11px 22px}
+.stb-info p{font-size:17px}
+@media(max-width:900px){.stb-hero h1{font-size:30px}.stb-card img{width:200px;height:200px}}
 CSSEOF
 WP="/opt/alt/php74/usr/bin/php /usr/local/bin/wp --path=$HOME/public_html/new"
-echo "== 1. gingham background from the old site"; cp -f ~/public_html/img/background.jpg wp-content/uploads/stb/background.jpg && ls -l wp-content/uploads/stb/background.jpg | awk '{print "  "$5" bytes"}'
-echo "== 2. css"; $WP eval 'wp_update_custom_css_post(file_get_contents("/tmp/stb-patch.css")); echo "  css bytes: ".strlen(wp_get_custom_css())."\n";'
-echo "== 3. homepage: drop spacer row, tag rows, fix card images"; HOME_ID=$($WP option get page_on_front)
-$WP post get $HOME_ID --field=post_content > /tmp/home-cur.txt
-/opt/alt/php74/usr/bin/php -r '
-$c=file_get_contents("/tmp/home-cur.txt");
-$p=strpos($c,"[/vc_row]"); $first=substr($c,0,$p+9);
-if(strpos($first,"vc_raw_html")===false){ $c=ltrim(substr($c,$p+9)); echo "  spacer row removed\n"; } else echo "  no spacer row found\n";
-$c=str_replace("[vc_row full_width=\"stretch_row_content_no_spaces\"]","[vc_row row_style=\"full-width\" el_class=\"stb-row\"]",$c);
-$c=str_replace("[vc_row]","[vc_row el_class=\"stb-row\"]",$c);
-$c=preg_replace_callback("#\[vc_raw_html\](.*?)\[/vc_raw_html\]#s",function($m){
-  $h=rawurldecode(base64_decode($m[1]));
-  $h=str_replace("2016/03/cupcake-cake.jpg","2016/03/gluten-free.jpg",$h);
-  $h=str_replace("stb/Specialty-Backdrop1.jpg\" alt=\"Sculpted specialty cakes\"","2016/03/CustomCakes_HandSculptedCakes.jpg\" alt=\"Sculpted specialty cakes\"",$h);
-  $h=str_replace("<img class=\"icon\" src=\"https://sweettsbakery.com/new/wp-content/uploads/2022/05/","<img src=\"https://sweettsbakery.com/new/wp-content/uploads/2022/05/",$h);
-  return "[vc_raw_html]".base64_encode(rawurlencode($h))."[/vc_raw_html]";},$c);
-file_put_contents("/tmp/home-new.txt",$c); echo "  rows: ".substr_count($c,"[vc_row")." | bytes: ".strlen($c)."\n";'
-$WP post update $HOME_ID --post_content="$(cat /tmp/home-new.txt)"
-$WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/home-new.txt /tmp/home-cur.txt /tmp/stb-patch.css
-echo "PATCH-3-OK"
+$WP eval 'wp_update_custom_css_post(file_get_contents("/tmp/stb-patch.css")); echo "css bytes: ".strlen(wp_get_custom_css())."\n";'
+$WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/stb-patch.css
+echo "PATCH-4-OK"
