@@ -32,6 +32,11 @@ foreach($J as $p){
   if(!empty($p['seo_title'])) update_post_meta($id,'_yoast_wpseo_title',$p['seo_title']);
   if(!empty($p['desc'])) update_post_meta($id,'_yoast_wpseo_metadesc',$p['desc']);
 }
+// --- homepage hours 10am → 8:30am inside raw html blocks
+$home=get_page_by_path('home'); $hid=$home?$home->ID:(int)get_option('page_on_front');
+if($hid){ $c=get_post_field('post_content',$hid); $n=0;
+  $c2=preg_replace_callback('#\[vc_raw_html\](.*?)\[/vc_raw_html\]#s',function($m) use(&$n,$dec,$enc){ $h=$dec($m[1]); $h2=str_replace(['10am &ndash; 4pm','10am-4pm','10am – 4pm'],'8:30am &ndash; 4pm',$h); if($h2!==$h)$n++; return '[vc_raw_html]'.$enc($h2).'[/vc_raw_html]'; },$c);
+  if($n){ wp_update_post(['ID'=>$hid,'post_content'=>$c2]); $log[]="homepage hours updated in $n block(s)"; } }
 $log[]="pages: created $created, updated $updated (reparented $reparented)";
 // --- junk
 foreach(['sample-page'] as $s){ $x=get_page_by_path($s); if($x){ wp_delete_post($x->ID,true); $log[]="deleted /$s/"; } }
