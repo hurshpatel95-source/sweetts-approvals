@@ -1,5 +1,4 @@
-set -e; cd ~/public_html/new
-cat > /tmp/stb-patch.css <<'CSSEOF'
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
 /* Sweet T's Bakeshop — homepage v2 (hero slideshow + cards + info strip). Customizer → Additional CSS. Brand purple #9362a6 / #6b3f85. */
 .stb-hero{position:relative;min-height:460px;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;overflow:hidden;margin:0 0 36px}
 .stb-slides{position:absolute;inset:0}
@@ -69,16 +68,43 @@ a.stb-card:hover{transform:translateY(-3px)}
 @media(max-width:900px){.stb-contact{grid-template-columns:1fr}}
 /* v6: don't let the sticky header shrink the logo to a speck */
 #header img.dark-logo, #header img.light-logo{min-height:72px !important;transition:max-height .2s}
-CSSEOF
-WP="/opt/alt/php74/usr/bin/php /usr/local/bin/wp --path=$HOME/public_html/new"
-echo "== 1. css"; $WP eval 'wp_update_custom_css_post(file_get_contents("/tmp/stb-patch.css")); echo "  css bytes: ".strlen(wp_get_custom_css())."\n";'
-echo "== 2. contact page (id 60): backup + rebuild with embed map"
-[ -f ~/contact-60-original.txt ] || $WP post get 60 --field=post_content > ~/contact-60-original.txt; echo "  backup: $(wc -c < ~/contact-60-original.txt) bytes"
-/opt/alt/php74/usr/bin/php -r '
-$h="<div class=\"stb-contact\"><div class=\"stb-contact-info\"><h1>Contact Sweet T&#8217;s Bakeshop</h1><p class=\"lead\">Call, email, or stop in. For custom cakes, please allow at least 2 weeks.</p><h4>Visit</h4><p>14 Kings Court, Haddonfield, NJ 08033<br><small>GPS: 1 Ellis St.</small></p><h4>Hours</h4><p>Tuesday &ndash; Saturday 10am &ndash; 4pm<br>Closed Sunday &amp; Monday</p><h4>Call / Email</h4><p><a href=\"tel:8564280222\">856.428.0222</a><br><a href=\"mailto:info@sweettbakes.com\">info@sweettbakes.com</a></p><p><a class=\"btn\" href=\"tel:8564280222\">Call us now</a> <a class=\"btn secondary\" href=\"https://www.google.com/maps/dir/?api=1&amp;destination=1+Ellis+St,+Haddonfield,+NJ+08033\" target=\"_blank\" rel=\"noopener\">Get directions</a></p></div><div class=\"stb-contact-map\"><iframe title=\"Map to Sweet T&#8217;s Bakeshop\" src=\"https://www.google.com/maps?q=14+Kings+Court,+Haddonfield,+NJ+08033&amp;output=embed\" loading=\"lazy\" allowfullscreen referrerpolicy=\"no-referrer-when-downgrade\"></iframe></div></div>";
-file_put_contents("/tmp/contact-new.txt","[vc_row el_class=\"stb-row\"][vc_column][vc_raw_html]".base64_encode(rawurlencode($h))."[/vc_raw_html][/vc_column][/vc_row]"); echo "  built\n";'
-$WP post update 60 --post_content="$(cat /tmp/contact-new.txt)"
-echo "== 3. preview gate: allow Hursh's Mac without a password (everyone else still needs it)"
-sed -i 's/^Require valid-user$/<RequireAny>\n  Require valid-user\n  Require ip 174.57.102.103\n  Require ip 2601:80:cc03:fa40:c84a:30dc:af29:d5f2\n<\/RequireAny>/' .htaccess; grep -c "Require ip" .htaccess
-$WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/contact-new.txt /tmp/stb-patch.css
-echo "PATCH-6-OK"
+/* v7: site-wide page system rebuilt from the 2014 design (gingham, dotted panels, pill tabs, sidebars) */
+body.page #content, body.single #content{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)),url(https://sweettsbakery.com/new/wp-content/uploads/2017/12/sweetTs-Bakery-back-final.jpg) center top / 520px repeat !important}
+body.page .main-content, body.single .main-content{background:transparent !important}
+.stb-wrap{max-width:1170px;margin:34px auto 64px;padding:0 15px}
+.stb-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 0 10px;position:relative;z-index:2}
+.stb-tabs a{background:#dccbe8;color:#4a2b5c;padding:11px 18px;border-radius:12px 12px 0 0;font-family:Montserrat,sans-serif;font-size:13.5px;letter-spacing:.03em;text-decoration:none;border:2px dotted #b48cc9;border-bottom:0}
+.stb-tabs a.active{background:#fff;color:#9362a6;position:relative;top:2px}
+.stb-panel{background:#fff;border:2px dotted #b48cc9;border-radius:16px;padding:30px 32px;box-shadow:0 4px 18px rgba(80,40,100,.08)}
+.stb-cols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
+.stb-main h1{font-family:Montserrat,sans-serif;font-size:24px;color:#8a5aa8;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px dotted #d9c8e6;padding:0 0 12px;margin:0 0 20px;font-weight:600}
+.stb-main img.lead{width:100%;height:auto;border-radius:10px;margin:0 0 20px;display:block}
+.stb-main p{font-size:16.5px;line-height:1.65;color:#444;margin:0 0 14px}
+.stb-main h3{font-family:Montserrat,sans-serif;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#6b3f85;margin:24px 0 8px;font-weight:600}
+.stb-main ul.flavors{columns:2;column-gap:36px;list-style:none;padding:0;margin:0 0 18px}
+.stb-main ul.flavors li{padding:7px 0;border-bottom:1px dotted #e3d6ec;break-inside:avoid;font-size:16px;color:#444}
+.stb-flavor{display:grid;grid-template-columns:130px minmax(0,1fr);gap:18px;align-items:start;padding:16px 0;border-bottom:1px dotted #e3d6ec}
+.stb-flavor img{width:130px;height:130px;object-fit:cover;border-radius:10px}
+.stb-flavor h3{margin:2px 0 6px}
+.stb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.stb-grid a{display:block;text-align:center;text-decoration:none}
+.stb-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block}
+.stb-grid span{display:block;margin-top:10px;font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#8a5aa8;border-top:2px dotted #d9c8e6;border-bottom:2px dotted #d9c8e6;padding:9px 0}
+.stb-gallery{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.stb-gallery a{display:block}.stb-gallery img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block;background:#f3edf7}
+.stb-side{background:#ece2f2;border-radius:14px;padding:22px 24px 10px}
+.stb-side .item{padding:12px 0 16px;border-bottom:1px dotted #c9b3d8}.stb-side .item:last-child{border-bottom:0}
+.stb-side h4{font-family:"Dancing Script","Snell Roundhand","Brush Script MT",cursive;font-size:30px;line-height:1.1;color:#4a2b5c;margin:0 0 6px;font-weight:600;text-transform:none;letter-spacing:0}
+.stb-side p{font-size:15px;line-height:1.5;margin:0 0 8px;color:#4a3a55}
+.stb-side a.link{font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a5aa8;text-decoration:underline}
+.stb-more{display:inline-block;margin-top:10px;font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8a5aa8;text-decoration:underline}
+.stb-price table{width:100%;border-collapse:collapse;margin:8px 0 22px;font-size:16px}
+.stb-price td,.stb-price th{padding:9px 10px;border-bottom:1px dotted #e3d6ec;text-align:left}.stb-price th{font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#6b3f85}
+.stb-price td:last-child{text-align:right;font-weight:700;color:#6b3f85}
+.stb-press .item{padding:18px 0;border-bottom:1px dotted #e3d6ec}.stb-press .item img{max-width:320px;height:auto;border-radius:10px;margin:8px 0}
+.stb-press .src{font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8a5aa8}
+.stb-cta{display:inline-block;background:#9362a6;color:#fff !important;padding:12px 24px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none !important;margin:6px 8px 6px 0}
+.wpcf7 label{display:block;font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#6b3f85;margin:14px 0 4px}
+.wpcf7 input[type=text],.wpcf7 input[type=email],.wpcf7 input[type=tel],.wpcf7 input[type=date],.wpcf7 input[type=number],.wpcf7 textarea,.wpcf7 select{width:100%;border:1px solid #d9c8e6;border-radius:10px;padding:10px 12px;font-size:15px}
+.wpcf7 .wpcf7-submit{background:#9362a6;color:#fff;border:0;border-radius:999px;padding:13px 28px;font-family:Montserrat,sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:16px;cursor:pointer}
+@media(max-width:900px){.stb-cols{grid-template-columns:1fr}.stb-grid{grid-template-columns:repeat(2,1fr)}.stb-gallery{grid-template-columns:repeat(2,1fr)}.stb-main ul.flavors{columns:1}.stb-panel{padding:22px 18px}.stb-tabs a{padding:9px 12px;font-size:12.5px}}
