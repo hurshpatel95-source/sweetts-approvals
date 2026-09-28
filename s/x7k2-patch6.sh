@@ -67,6 +67,8 @@ a.stb-card:hover{transform:translateY(-3px)}
 .stb-contact-map{border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(80,40,100,.10);min-height:460px}
 .stb-contact-map iframe{width:100%;height:100%;min-height:460px;border:0;display:block}
 @media(max-width:900px){.stb-contact{grid-template-columns:1fr}}
+/* v6: don't let the sticky header shrink the logo to a speck */
+#header img.dark-logo, #header img.light-logo{min-height:72px !important;transition:max-height .2s}
 CSSEOF
 WP="/opt/alt/php74/usr/bin/php /usr/local/bin/wp --path=$HOME/public_html/new"
 echo "== 1. css"; $WP eval 'wp_update_custom_css_post(file_get_contents("/tmp/stb-patch.css")); echo "  css bytes: ".strlen(wp_get_custom_css())."\n";'
@@ -76,5 +78,7 @@ echo "== 2. contact page (id 60): backup + rebuild with embed map"
 $h="<div class=\"stb-contact\"><div class=\"stb-contact-info\"><h1>Contact Sweet T&#8217;s Bakeshop</h1><p class=\"lead\">Call, email, or stop in. For custom cakes, please allow at least 2 weeks.</p><h4>Visit</h4><p>14 Kings Court, Haddonfield, NJ 08033<br><small>GPS: 1 Ellis St.</small></p><h4>Hours</h4><p>Tuesday &ndash; Saturday 10am &ndash; 4pm<br>Closed Sunday &amp; Monday</p><h4>Call / Email</h4><p><a href=\"tel:8564280222\">856.428.0222</a><br><a href=\"mailto:info@sweettbakes.com\">info@sweettbakes.com</a></p><p><a class=\"btn\" href=\"tel:8564280222\">Call us now</a> <a class=\"btn secondary\" href=\"https://www.google.com/maps/dir/?api=1&amp;destination=1+Ellis+St,+Haddonfield,+NJ+08033\" target=\"_blank\" rel=\"noopener\">Get directions</a></p></div><div class=\"stb-contact-map\"><iframe title=\"Map to Sweet T&#8217;s Bakeshop\" src=\"https://www.google.com/maps?q=14+Kings+Court,+Haddonfield,+NJ+08033&amp;output=embed\" loading=\"lazy\" allowfullscreen referrerpolicy=\"no-referrer-when-downgrade\"></iframe></div></div>";
 file_put_contents("/tmp/contact-new.txt","[vc_row el_class=\"stb-row\"][vc_column][vc_raw_html]".base64_encode(rawurlencode($h))."[/vc_raw_html][/vc_column][/vc_row]"); echo "  built\n";'
 $WP post update 60 --post_content="$(cat /tmp/contact-new.txt)"
+echo "== 3. preview gate: allow Hursh's Mac without a password (everyone else still needs it)"
+sed -i 's/^Require valid-user$/<RequireAny>\n  Require valid-user\n  Require ip 2601:80:cc03:fa40:c84a:30dc:af29:d5f2\n<\/RequireAny>/' .htaccess; grep -c "Require ip" .htaccess
 $WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/contact-new.txt /tmp/stb-patch.css
-echo "PATCH-5-OK"
+echo "PATCH-6-OK"
