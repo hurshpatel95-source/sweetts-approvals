@@ -53,8 +53,28 @@ a.stb-card:hover{transform:translateY(-3px)}
 .stb-card .btn{font-size:13px;padding:11px 22px}
 .stb-info p{font-size:17px}
 @media(max-width:900px){.stb-hero h1{font-size:30px}.stb-card img{width:200px;height:200px}}
+/* v5: contact page */
+.page-id-60 .main-content{background:transparent !important}
+.page-id-60 #content{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.45)),url(https://sweettsbakery.com/new/wp-content/uploads/2017/12/sweetTs-Bakery-back-final.jpg) center top / 520px repeat !important}
+.stb-contact{display:grid;grid-template-columns:1fr 1.2fr;gap:30px;margin:40px 15px 60px;align-items:stretch}
+.stb-contact-info{background:rgba(255,255,255,.92);border-radius:14px;padding:34px 36px;box-shadow:0 4px 18px rgba(80,40,100,.10)}
+.stb-contact-info h1{font-family:Montserrat,sans-serif;font-size:28px;color:#6b3f85;margin:0 0 8px;text-transform:none}
+.stb-contact-info .lead{font-size:17px;color:#555;margin:0 0 22px}
+.stb-contact-info h4{font-family:Montserrat,sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#6b3f85;margin:18px 0 4px}
+.stb-contact-info p{margin:0;font-size:17px;line-height:1.55;color:#444}.stb-contact-info a{color:#6b3f85;text-decoration:none}
+.stb-contact-info .btn{display:inline-block;background:#9362a6;color:#fff !important;padding:12px 24px;border-radius:999px;font-family:Montserrat,sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:24px 8px 0 0}
+.stb-contact-info .btn.secondary{background:#fff;color:#6b3f85 !important;border:2px solid #9362a6;padding:10px 22px}
+.stb-contact-map{border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(80,40,100,.10);min-height:460px}
+.stb-contact-map iframe{width:100%;height:100%;min-height:460px;border:0;display:block}
+@media(max-width:900px){.stb-contact{grid-template-columns:1fr}}
 CSSEOF
 WP="/opt/alt/php74/usr/bin/php /usr/local/bin/wp --path=$HOME/public_html/new"
-$WP eval 'wp_update_custom_css_post(file_get_contents("/tmp/stb-patch.css")); echo "css bytes: ".strlen(wp_get_custom_css())."\n";'
-$WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/stb-patch.css
-echo "PATCH-4-OK"
+echo "== 1. css"; $WP eval 'wp_update_custom_css_post(file_get_contents("/tmp/stb-patch.css")); echo "  css bytes: ".strlen(wp_get_custom_css())."\n";'
+echo "== 2. contact page (id 60): backup + rebuild with embed map"
+[ -f ~/contact-60-original.txt ] || $WP post get 60 --field=post_content > ~/contact-60-original.txt; echo "  backup: $(wc -c < ~/contact-60-original.txt) bytes"
+/opt/alt/php74/usr/bin/php -r '
+$h="<div class=\"stb-contact\"><div class=\"stb-contact-info\"><h1>Contact Sweet T&#8217;s Bakeshop</h1><p class=\"lead\">Call, email, or stop in. For custom cakes, please allow at least 2 weeks.</p><h4>Visit</h4><p>14 Kings Court, Haddonfield, NJ 08033<br><small>GPS: 1 Ellis St.</small></p><h4>Hours</h4><p>Tuesday &ndash; Saturday 10am &ndash; 4pm<br>Closed Sunday &amp; Monday</p><h4>Call / Email</h4><p><a href=\"tel:8564280222\">856.428.0222</a><br><a href=\"mailto:info@sweettbakes.com\">info@sweettbakes.com</a></p><p><a class=\"btn\" href=\"tel:8564280222\">Call us now</a> <a class=\"btn secondary\" href=\"https://www.google.com/maps/dir/?api=1&amp;destination=1+Ellis+St,+Haddonfield,+NJ+08033\" target=\"_blank\" rel=\"noopener\">Get directions</a></p></div><div class=\"stb-contact-map\"><iframe title=\"Map to Sweet T&#8217;s Bakeshop\" src=\"https://www.google.com/maps?q=14+Kings+Court,+Haddonfield,+NJ+08033&amp;output=embed\" loading=\"lazy\" allowfullscreen referrerpolicy=\"no-referrer-when-downgrade\"></iframe></div></div>";
+file_put_contents("/tmp/contact-new.txt","[vc_row el_class=\"stb-row\"][vc_column][vc_raw_html]".base64_encode(rawurlencode($h))."[/vc_raw_html][/vc_column][/vc_row]"); echo "  built\n";'
+$WP post update 60 --post_content="$(cat /tmp/contact-new.txt)"
+$WP cache flush >/dev/null 2>&1 || true; rm -f /tmp/contact-new.txt /tmp/stb-patch.css
+echo "PATCH-5-OK"
