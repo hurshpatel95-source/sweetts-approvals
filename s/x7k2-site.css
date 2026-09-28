@@ -73,7 +73,7 @@ body.page #content, body.single #content{background:linear-gradient(rgba(255,255
 body.page .main-content, body.single .main-content{background:transparent !important}
 .stb-wrap{max-width:1170px;margin:34px auto 64px;padding:0 15px}
 .stb-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 0 10px;position:relative;z-index:2}
-.stb-tabs a{background:#dccbe8;color:#4a2b5c;padding:11px 18px;border-radius:12px 12px 0 0;font-family:Montserrat,sans-serif;font-size:13.5px;letter-spacing:.03em;text-decoration:none;border:2px dotted #b48cc9;border-bottom:0}
+.stb-tabs a{background:#dccbe8;color:#4a2b5c;padding:10px 14px;border-radius:12px 12px 0 0;font-family:Montserrat,sans-serif;font-size:12.5px;letter-spacing:.03em;text-decoration:none;border:2px dotted #b48cc9;border-bottom:0}
 .stb-tabs a.active{background:#fff;color:#9362a6;position:relative;top:2px}
 .stb-panel{background:#fff;border:2px dotted #b48cc9;border-radius:16px;padding:30px 32px;box-shadow:0 4px 18px rgba(80,40,100,.08)}
 .stb-cols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
