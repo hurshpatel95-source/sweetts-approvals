@@ -1,7 +1,7 @@
 {
 "meta": {
 "business": "Sweet T's Bakeshop",
-"generated": "2026-09-27e",
+"generated": "2026-09-27f",
 "approver_email": "hurshpatel95@gmail.com",
 "greeting": "Hi Chrissy — everything on this page is a <b>draft</b>. Nothing goes live until you approve it. Edit anything you like, then tap <b>Send to Hursh</b> at the bottom. It takes about 15 minutes if you use “Approve all shown” on the reviews."
 },
@@ -61,12 +61,13 @@
 },
 {
 "id": "d-coffee",
-"short": "Coffee shop category",
-"title": "Keep “Coffee shop” as a Google category?",
-"body": "<p>Google lists you under Bakery (main), Pie shop, Coffee shop, Dessert shop, Wedding bakery and Dessert restaurant. We’d like to add <b>Cake shop</b> and <b>Cupcake shop</b> (your biggest searches) and drop <b>Dessert restaurant</b>. “Coffee shop” brought 2,085 “coffee” searches in 6 months but those people rarely want a bakery.</p>",
+"short": "Google categories",
+"title": "Add “Cake shop” and “Cupcake shop” to your Google categories?",
+"body": "<p>Google lists you as Bakery (main), Pie shop, Coffee shop, Dessert shop, Wedding bakery and Dessert restaurant. Coffee shop stays — you serve it. We’d like to <b>add Cake shop and Cupcake shop</b> (your biggest searches: “custom cakes near me” gets 22,000 searches a month) and <b>drop “Dessert restaurant”</b>, which you aren’t.</p>",
 "options": [
-"Drop Coffee shop",
-"Keep Coffee shop"
+"Yes, add Cake shop + Cupcake shop, drop Dessert restaurant",
+"Add them but keep Dessert restaurant too",
+"Leave categories as they are"
 ]
 }
 ],
