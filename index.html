@@ -89,11 +89,11 @@ a{color:var(--purple-dark)}
 
   <section class="panel" id="panel-reviews">
     <div class="intro"><h2>Replies to your Google reviews</h2>
-      <p>These customers left a review you haven't answered yet. Each has a short draft reply written the way you already reply. Approve as-is, edit it, or skip it. Nothing is posted until you say so.</p>
+      <p>These customers left a review you haven't answered yet — including older ones, because Google counts replies to all of them. Each has a short draft reply written the way you already reply, with one specific thing from their review. Approve as-is, edit it, or skip it. Nothing is posted until you say so.</p>
       <p class="note">Tip: <b>Approve all shown</b> approves every reply currently on screen; you can still edit or skip individual ones after.</p>
     </div>
     <div class="toolbar">
-      <label><input type="checkbox" id="hideRecent" checked> Hide the last 2 months (<span id="recentCount">0</span>)</label>
+      <label><input type="checkbox" id="hideRecent"> Only show the last 2 months (<span id="recentCount">0</span>)</label>
       <label><input type="checkbox" id="hideDone"> Hide ones I've done</label>
       <span class="pill" id="reviewsShown"></span>
       <button class="btn ok" id="approveAllReviews">Approve all shown</button>
@@ -169,7 +169,7 @@ function render(keepScroll){
   document.getElementById('reviews').innerHTML=DATA.reviews.map(r=>{
     const isRecent=new Date(r.dateApprox).getTime()>cutoff; if(isRecent)recent++;
     const done=!!(STATE[r.id]||{}).status;
-    if((hideRecent&&isRecent)||(hideDone&&done))return '';
+    if((hideRecent&&!isRecent)||(hideDone&&done))return '';
     shown++;
     return itemCard(r.id,`${esc(r.name)}`,`<span class="stars">${stars(r.stars)}</span> · ${esc(r.dateText)}`,r.text?`<div class="review-text">${esc(r.text)}</div>`:`<div class="review-text note">(rating only, no text)</div>`,r.draft,{label:'Your reply'});
   }).join('')||'<p class="note">Nothing to show with these filters.</p>';
